@@ -285,7 +285,7 @@ def move_right_down(x, y, state):
                 next_y = y + abs(x - next_x)
             else:
                 next_y = random.randint(y + 1, 9)
-                next_x = x - abs(y - next_y)
+                next_x = x + abs(y - next_y)
     return [next_x, next_y]
 
 
