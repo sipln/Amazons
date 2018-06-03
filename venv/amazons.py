@@ -259,7 +259,7 @@ def move_right_down(x, y, state):
             for i in range(x + 1, 10, 1):
                 if state[i][temp_y + 1] != '.':
                     try:
-                        next_x = random.randint(i + 1, smaller - 1)
+                        next_x = random.randint(x + 1, i - 1)
                     except ValueError:
                         next_x = x
                     next_y = y + abs(x - next_x)
@@ -273,11 +273,10 @@ def move_right_down(x, y, state):
                         next_y = random.randint(y + 1, i - 1)
                     except ValueError:
                         next_y = y
-                    next_x = x - abs(y - next_y)
+                    next_x = x + abs(y - next_y)
                     found = True
-                    print("Done y")
                     break
-                temp_x -= 1
+                temp_x += 1
 
         if found is False:
             if smaller == (9 - x):
