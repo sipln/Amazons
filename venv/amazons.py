@@ -211,6 +211,52 @@ def move_right_up(x, y, state):
 
         if smaller == x:
             for i in range(smaller - 1, -1, -1):
+                if state[i][temp_y + 1] != '.':
+                    try:
+                        next_x = random.randint(i + 1, smaller - 1)
+                    except ValueError:
+                        next_x = x
+                    next_y = y + abs(x - next_x)
+                    found = True
+                    break
+                temp_y += 1
+        else:
+            for i in range(y + 1, 10, 1):
+                if state[temp_x - 1][i] != '.':
+                    try:
+                        next_y = random.randint(y + 1, i - 1)
+                    except ValueError:
+                        next_y = y
+                    next_x = x - abs(y - next_y)
+                    found = True
+                
+                    break
+                temp_x -= 1
+
+        if found is False:
+            if smaller == x:
+                next_x = random.randint(0, smaller - 1)
+                next_y = y + abs(x - next_x)
+            else:
+                next_y = random.randint(y + 1, 9)
+                next_x = x - abs(y - next_y)
+    return [next_x, next_y]
+
+
+def move_right_down(x, y, state):
+    next_x = x
+    next_y = y
+
+    if x == 0 or y == 9:
+        None
+    else:
+        found = False
+        temp_x = x
+        temp_y = y
+        smaller = min(9 - x, 9 - y)
+
+        if smaller == (9 - x):
+            for i in range(x + 1, 10, 1):
                 if state[i][temp_y - 1] != '.':
                     try:
                         next_x = random.randint(i + 1, smaller - 1)
@@ -241,10 +287,6 @@ def move_right_up(x, y, state):
                 next_y = random.randint(y + 1, 9)
                 next_x = x - abs(y - next_y)
     return [next_x, next_y]
-
-
-def move_right_down(x, y, state):
-    pass
 
 
 Initial_Board = [
