@@ -1,3 +1,6 @@
 import random
 
-print(random.randint(1, 1))
+a = [[1, 2], [3, 4]]
+b = [2, 1]
+
+print(a[-2][-2])

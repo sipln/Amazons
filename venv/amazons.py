@@ -1,5 +1,17 @@
 import random
+import copy
 # ======================== Class Player =======================================
+
+DIRECT = [
+            'LEFT',
+            'UP',
+            'RIGHT',
+            'DOWN'
+            'LEFT_UP',
+            'RIGHT_UP',
+            'LEFT_DOWN',
+            'RIGHT_DOWN',
+    ]
 
 
 class Player:
@@ -18,25 +30,76 @@ class Player:
         # (row2, col2): new position of selected amazon
         # (row3, col3): position of the square is shot
 
-    Initial_Board = [
-        ['.', '.', '.', '_w_', '.', '.', '_w_', '.', '.', '.'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['_w_', '.', '.', '.', '.', '.', '.', '.', '.', '_w_'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['_b_', '.', '.', '.', '.', '.', '.', '.', '.', '_b_'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
-        ['.', '.', '.', '_b_', '.', '.', '_b_', '.', '.', '.'], \
-        ]
 
     def nextMove(self, state):
+
+        copy_state = copy.deepcopy(state)
+        my_queens = get_queens(self.str, state)
+
+        # your_queens =  []
+        # if self.str == 'w':
+        #     your_queens = get_queens('b', state)
+        # else:
+        #     your_queens = get_queens('w', state)
+
+        picked_queen = random.choice(my_queens)
+
+        next_move_direct = random.choice(DIRECT)
+
+        next_move = []
+        if next_move_direct == 'LEFT':
+            next_move = move_left(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'UP':
+            next_move = move_up(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'RIGHT':
+            next_move = move_right(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'DOWN':
+            next_move = move_down(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'LEFT_UP':
+            next_move = move_left_up(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'RIGHT_UP':
+            next_move = move_right_up(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'LEFT_DOWN':
+            next_move = move_left_down(picked_queen[0], picked_queen[1], copy_state)
+        elif next_move_direct == 'RIGHT_DOWN':
+            next_move = move_right_down(picked_queen[0], picked_queen[1], copy_state)
+
+        if next_move == picked_queen:
+            next_move = [None, None]
+
+        if next_move != [None, None]:
+            arrow_state = copy.deepcopy(state)
+            arrow_state[picked_queen[0]][picked_queen[1]] = "."
+            arrow_state[next_move[0]][next_move[1]] = self.str
+
+            throw_arrow_direct = random.choice(DIRECT)
+            arrow = []
+            if next_move_direct == 'LEFT':
+                arrow = move_left(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'UP':
+                arrow = move_up(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'RIGHT':
+                arrow = move_right(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'DOWN':
+                arrow = move_down(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'LEFT_UP':
+                arrow = move_left_up(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'RIGHT_UP':
+                arrow = move_right_up(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'LEFT_DOWN':
+                arrow = move_left_down(next_move[0], next_move[1], arrow_state)
+            elif next_move_direct == 'RIGHT_DOWN':
+                arrow = move_right_down(next_move[0], next_move[1], arrow_state)
+
+            if arrow == next_move:
+                arrow = [None, None]
+        else:
+            arrow = [None, None]
+
         result = [
-                    # (random.randint(0,9), random.randint(0,9)),
-                    # (random.randint(0,9), random.randint(0,9)),
-                    # (random.randint(0,9), random.randint(0,9))
-                    # [(0, 3), (5, 3), (8, 6)]
+                    picked_queen,
+                    next_move,
+                    arrow
                  ]
         return result
 
@@ -48,6 +111,11 @@ def get_queens(name, state):
             if state[i][j] == name:
                 queens.append((i, j))
     return queens
+
+
+def get_valid_queen(queens, state):
+    pass
+
 
 
 def move_left(x, y, state):
@@ -345,9 +413,5 @@ Initial_Board = [
                   ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
                   ['.', '.', '.', 'b', '.', '.', 'b', '.', '.', '.'], \
                 ]
-
-print(get_queens("w", Initial_Board))
-
-print(move_right_down(5, 0 , Initial_Board))
 
 
