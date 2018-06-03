@@ -36,109 +36,149 @@ class Player:
                     # (random.randint(0,9), random.randint(0,9)),
                     # (random.randint(0,9), random.randint(0,9)),
                     # (random.randint(0,9), random.randint(0,9))
-            # [(0, 3), (5, 3), (8, 6)]
+                    # [(0, 3), (5, 3), (8, 6)]
                  ]
         return result
 
-    def move_left(x, y, state):
-        nextY = y
-        if y == 0:
-            None
-        else:
-            for i in range(y - 1, -1, -1):
-                if state[x][i] != '.':
-                    nextY = random.randint(i + 1, y - 1)
-                    break
-        return nextY
 
-    def move_up(x, y, state):
-        nextX = x
-        if x == 0:
-            None
-        else:
-            for i in range(x, -1, -1):
-                if state[i][y] != '.':
-                    nextX = random.randint(i + 1, x - 1)
-                    break
-        return nextX
+def get_queens(name, state):
+    queens =[]
+    for i in range(len(state)):
+        for j in range(len(state[0])):
+            if state[i][j] == name:
+                queens.append((i, j))
+    return queens
 
-    def move_right(x, y, state):
-        nextY = y
-        if y == 9:
-            None
-        else:
-            for i in range(y + 1, 10, 1):
-                if state[x][i] != '.':
-                    nextY = random.randint(y + 1, i - 1)
-                    break
-        return nextY
 
-    def move_down(x, y, state):
-        nextX = x
-        return nextX
+def move_left(x, y, state):
+    next_y = y
+    if y == 0:
+        None
+    else:
+        for i in range(y - 1, -1, -1):
+            if state[x][i] != '.':
+                next_y = random.randint(i + 1, y - 1)
+                break
+    return next_y
 
-    def move_left_up(x, y, state):
-        nextX = x
-        nextY = y
+
+def move_up(x, y, state):
+    next_x = x
+    if x == 0:
+        None
+    else:
+        for i in range(x, -1, -1):
+            if state[i][y] != '.':
+                next_x = random.randint(i + 1, x - 1)
+                break
+    return next_x
+
+
+def move_right(x, y, state):
+    next_y = y
+    if y == 9:
+        None
+    else:
+        for i in range(y + 1, 10, 1):
+            if state[x][i] != '.':
+                next_y = random.randint(y + 1, i - 1)
+                break
+    return next_y
+
+
+def move_down(x, y, state):
+    next_x = x
+    return next_x
+
+
+def move_left_up(x, y, state):
+    next_x = x
+    next_y = y
+
+    if x == 0 or y == 0:
+        None
+    else:
         found = False
-        if x == 0 or y == 0:
-            None
-        else:
-            smaller = min(x, y)
-            tempX = x
-            tempY = y
-            print(smaller)
+        temp_x = x
+        temp_y = y
+        smaller = min(x, y)
+
+        # for i in range(smaller - 1, -1, -1):
+        #     if smaller == x:
+        #         if state[i][temp_y - 1] != '.':
+        #             next_x = random.randint(i + 1, x -1)
+        #             next_y = y - abs(x - next_x)
+        #             found = True
+        #             break
+        #         temp_y -= 1
+        #     else:
+        #         if state[temp_x - 1][i] != '.':
+        #             next_y = random.randint(i+ 1, y-1)
+        #             next_x = x - abs(y - next_y)
+        #             found = True
+        #             break
+        #         temp_x -= 1
+
+        if smaller == x:
             for i in range(smaller - 1, -1, -1):
-                if smaller == x:
-                    if state[i][tempY - 1] != '.':
-                        nextX = random.randint(i + 1, x -1)
-                        nextY = y - abs(x - nextX)
-                        found = True
-                        print("Done x")
-                        break
-                    tempY -= 1
-                elif smaller == y:
-                    if state[tempX - 1][i] != '.':
-                        nextY = random.randint(i+ 1, y-1)
-                        nextX = x - abs(y - nextY)
-                        found = True
-                        print("Done y")
-                        break
-                    tempX -= 1
+                if state[i][temp_y - 1] != '.':
+                    try:
+                        next_x = random.randint(i + 1, smaller - 1)
+                    except ValueError:
+                        next_x = smaller
+                    next_y = y - abs(x - next_x)
+                    found = True
+                    break
+                temp_y -= 1
+        else:
+            for i in range(smaller - 1, -1, -1):
+                if state[temp_x - 1][i] != '.':
+                    try:
+                        next_y = random.randint(i + 1, smaller - 1)
+                    except ValueError:
+                        next_y = smaller
+                    next_x = x - abs(y - next_y)
+                    found = True
+                    break
+                temp_x -= 1
 
-            if found == False:
-                if smaller == x:
-                    nextX = random.randint(0, smaller - 1)
-                    nextY = random.randint(y - smaller, y - 1)
-                else:
-                    nextX = random.randint(x - smaller, x - 1)
-                    nextY = random.randint(0, smaller - 1)
-        return [nextX, nextY]
-
-    def move_left_down(x, y, state):
-        nextX = x
-        nextY = y
-        return [nextX, nextY]
-
-
-    def move_right_up(x, y, state):
-        nextX = x
-        nextY = y
-        return [nextX, nextY]
+        if found is False:
+            if smaller == x:
+                next_x = random.randint(0, smaller - 1)
+                next_y = y - abs(x - next_x)
+            else:
+                next_y = random.randint(0, smaller - 1)
+                next_x = x - abs(y - next_y)
+    return [next_x, next_y]
 
 
-    def getQueens(name, state):
-        queens =[]
-        for i in range(len(state)):
-            for j in range(len(state[0])):
-                if state[i][j] == name:
-                   queens.append((i, j))
-        return queens
+def move_left_down(x, y, state):
+    pass
 
 
-    queens = getQueens("_w_",Initial_Board)
-    print(queens)
+def move_right_up(x, y, state):
+   pass
 
-    print(move_left_up(1, 6, Initial_Board))
+
+def move_right_down(x, y, state):
+    pass
+
+
+Initial_Board = [
+                  ['.', '.', '.', 'w', '.', '.', 'w', '.', '.', '.'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['w', '.', '.', '.', '.', '.', '.', '.', '.', 'w'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['b', '.', '.', '.', '.', '.', '.', '.', '.', 'b'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.'], \
+                  ['.', '.', '.', 'b', '.', '.', 'b', '.', '.', '.'], \
+                ]
+
+print(get_queens("w", Initial_Board))
+
+print(move_left_up(3, 1, Initial_Board))
 
 
