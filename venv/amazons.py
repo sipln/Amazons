@@ -165,7 +165,7 @@ def move_left_down(x, y, state):
         smaller = min(9 - x, y)
 
         if smaller == (9 - x):
-            for i in range(x + 1, 10 , 1):
+            for i in range(x + 1, 10, 1):
                 if state[i][temp_y - 1] != '.':
                     try:
                         next_x = random.randint(x + 1, i - 1)
@@ -229,7 +229,7 @@ def move_right_up(x, y, state):
                         next_y = y
                     next_x = x - abs(y - next_y)
                     found = True
-                
+
                     break
                 temp_x -= 1
 
@@ -257,7 +257,7 @@ def move_right_down(x, y, state):
 
         if smaller == (9 - x):
             for i in range(x + 1, 10, 1):
-                if state[i][temp_y - 1] != '.':
+                if state[i][temp_y + 1] != '.':
                     try:
                         next_x = random.randint(i + 1, smaller - 1)
                     except ValueError:
@@ -268,7 +268,7 @@ def move_right_down(x, y, state):
                 temp_y += 1
         else:
             for i in range(y + 1, 10, 1):
-                if state[temp_x - 1][i] != '.':
+                if state[temp_x + 1][i] != '.':
                     try:
                         next_y = random.randint(y + 1, i - 1)
                     except ValueError:
