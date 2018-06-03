@@ -42,65 +42,55 @@ class Player:
         # else:
         #     your_queens = get_queens('w', state)
 
-        picked_queen = random.choice(my_queens)
+        moves = [
+            move_left,
+            move_up,
+            move_right,
+            move_down,
+            move_left_up,
+            move_right_up,
+            move_left_down,
+            move_right_down
+        ]
 
-        next_move_direct = random.choice(DIRECT)
+        move_check_list = []
+        for queen in my_queens:
+            move_check =[]
+            for move in moves:
+                move_check.append(move(queen[0], queen[1], copy_state))
+            move_check_list.append(move_check)
 
-        next_move = []
-        if next_move_direct == 'LEFT':
-            next_move = move_left(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'UP':
-            next_move = move_up(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'RIGHT':
-            next_move = move_right(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'DOWN':
-            next_move = move_down(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'LEFT_UP':
-            next_move = move_left_up(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'RIGHT_UP':
-            next_move = move_right_up(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'LEFT_DOWN':
-            next_move = move_left_down(picked_queen[0], picked_queen[1], copy_state)
-        elif next_move_direct == 'RIGHT_DOWN':
-            next_move = move_right_down(picked_queen[0], picked_queen[1], copy_state)
+        pick_queen = None
+        next_move  = []
+        for queen in my_queens:
+            queen_moves = move_check_list[my_queens.index(queen)]
+            if queen_moves != [[queen[0], queen[1]]*8 ]:
+                pick_queen = queen
+                for move in queen_moves:
+                    if move != [queen[0], queen[1]]:
+                        next_move = move
+                        break;
 
-        if next_move == picked_queen:
-            next_move = [None, None]
+        arrows = []
+        arrow_state = copy.deepcopy(copy_state)
+        arrow_state[pick_queen[0]][pick_queen[1]] = '.'
+        arrow_state[next_move[0]][next_move[1]] = self.str
 
-        if next_move != [None, None]:
-            arrow_state = copy.deepcopy(state)
-            arrow_state[picked_queen[0]][picked_queen[1]] = "."
-            arrow_state[next_move[0]][next_move[1]] = self.str
+        throw_arrow = []
 
-            throw_arrow_direct = random.choice(DIRECT)
-            arrow = []
-            if next_move_direct == 'LEFT':
-                arrow = move_left(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'UP':
-                arrow = move_up(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'RIGHT':
-                arrow = move_right(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'DOWN':
-                arrow = move_down(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'LEFT_UP':
-                arrow = move_left_up(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'RIGHT_UP':
-                arrow = move_right_up(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'LEFT_DOWN':
-                arrow = move_left_down(next_move[0], next_move[1], arrow_state)
-            elif next_move_direct == 'RIGHT_DOWN':
-                arrow = move_right_down(next_move[0], next_move[1], arrow_state)
+        for move in moves:
+            arrows.append(move(next_move[0], next_move[1], arrow_state))
+            for arrow in arrows:
+                if arrow != [next_move[0], next_move[1]]:
+                    throw_arrow = arrow
 
-            if arrow == next_move:
-                arrow = [None, None]
-        else:
-            arrow = [None, None]
 
         result = [
-                    picked_queen,
-                    next_move,
-                    arrow
-                 ]
+            pick_queen,
+            next_move,
+            throw_arrow
+        ]
+
         return result
 
 
@@ -111,11 +101,6 @@ def get_queens(name, state):
             if state[i][j] == name:
                 queens.append((i, j))
     return queens
-
-
-def get_valid_queen(queens, state):
-    pass
-
 
 
 def move_left(x, y, state):
@@ -136,7 +121,10 @@ def move_left(x, y, state):
                 break
 
         if found is False:
-            next_y = random.randint(0, y - 1)
+            try:
+                next_y = random.randint(0, y - 1)
+            except ValueError:
+                next_y = y
     return [next_x, next_y]
 
 
@@ -158,7 +146,10 @@ def move_up(x, y, state):
                 break
 
         if found is False:
-            next_x = random.randint(0, x - 1)
+            try:
+                next_x = random.randint(0, x - 1)
+            except ValueError:
+                next_x = x
     return [next_x, next_y]
 
 
@@ -179,7 +170,10 @@ def move_right(x, y, state):
                 break
 
         if found is False:
-            next_y = random.randint(y + 1, 9)
+            try:
+                next_y = random.randint(y + 1, 9)
+            except ValueError:
+                next_y = y
     return [next_x, next_y]
 
 
@@ -200,7 +194,10 @@ def move_down(x, y, state):
                 break
 
         if found is False:
-            next_x = random.randint(x + 1, 9)
+            try:
+                next_x = random.randint(x + 1, 9)
+            except ValueError:
+                next_x = x
     return [next_x, next_y]
 
 
@@ -257,10 +254,16 @@ def move_left_up(x, y, state):
 
         if found is False:
             if smaller == x:
-                next_x = random.randint(0, smaller - 1)
+                try:
+                    next_x = random.randint(0, smaller - 1)
+                except ValueError:
+                    next_x = x
                 next_y = y - abs(x - next_x)
             else:
-                next_y = random.randint(0, smaller - 1)
+                try:
+                    next_y = random.randint(0, smaller - 1)
+                except ValueError:
+                    next_y = y
                 next_x = x - abs(y - next_y)
     return [next_x, next_y]
 
@@ -302,10 +305,16 @@ def move_left_down(x, y, state):
 
         if found is False:
             if smaller == (9 - x):
-                next_x = random.randint(x + 1, 9)
+                try:
+                    next_x = random.randint(x + 1, 9)
+                except ValueError:
+                    next_x = x
                 next_y = y - abs(x - next_x)
             else:
-                next_y = random.randint(0, smaller - 1)
+                try:
+                    next_y = random.randint(0, smaller - 1)
+                except ValueError:
+                    next_y = y
                 next_x = x + abs(y - next_y)
     return [next_x, next_y]
 
@@ -348,10 +357,16 @@ def move_right_up(x, y, state):
 
         if found is False:
             if smaller == x:
-                next_x = random.randint(0, smaller - 1)
+                try:
+                    next_x = random.randint(0, smaller - 1)
+                except ValueError:
+                    next_x = x
                 next_y = y + abs(x - next_x)
             else:
-                next_y = random.randint(y + 1, 9)
+                try:
+                    next_y = random.randint(y + 1, 9)
+                except ValueError:
+                    next_y = y
                 next_x = x - abs(y - next_y)
     return [next_x, next_y]
 
@@ -393,10 +408,16 @@ def move_right_down(x, y, state):
 
         if found is False:
             if smaller == (9 - x):
-                next_x = random.randint(x + 1, 9)
+                try:
+                    next_x = random.randint(x + 1, 9)
+                except ValueError:
+                    next_x = x
                 next_y = y + abs(x - next_x)
             else:
-                next_y = random.randint(y + 1, 9)
+                try:
+                    next_y = random.randint(y + 1, 9)
+                except ValueError:
+                    next_y = y
                 next_x = x + abs(y - next_y)
     return [next_x, next_y]
 
