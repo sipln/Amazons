@@ -51,44 +51,69 @@ def get_queens(name, state):
 
 
 def move_left(x, y, state):
+    next_x = x
     next_y = y
+
     if y == 0:
         None
     else:
         for i in range(y - 1, -1, -1):
             if state[x][i] != '.':
-                next_y = random.randint(i + 1, y - 1)
+                try:
+                    next_y = random.randint(i + 1, y - 1)
+                except ValueError:
+                    next_y = y
                 break
-    return next_y
+    return [next_x, next_y]
 
 
 def move_up(x, y, state):
     next_x = x
+    next_y = y
+
     if x == 0:
         None
     else:
-        for i in range(x, -1, -1):
+        for i in range(x - 1, -1, -1):
             if state[i][y] != '.':
-                next_x = random.randint(i + 1, x - 1)
+                try:
+                    next_x = random.randint(i + 1, x - 1)
+                except ValueError:
+                    next_x = x
                 break
-    return next_x
+    return [next_x, next_y]
 
 
 def move_right(x, y, state):
+    next_x = x
     next_y = y
     if y == 9:
         None
     else:
         for i in range(y + 1, 10, 1):
             if state[x][i] != '.':
-                next_y = random.randint(y + 1, i - 1)
+                try:
+                    next_y = random.randint(y + 1, i - 1)
+                except ValueError:
+                    next_y = y
                 break
-    return next_y
+    return [next_x, next_y]
 
 
 def move_down(x, y, state):
     next_x = x
-    return next_x
+    next_y = y
+    if x == 9:
+        None
+    else:
+        for i in range(x + 1, 10, 1):
+            if state[x][i] != '.':
+                try:
+                    next_x = random.randint(x + 1, i - 1)
+                except ValueError:
+                    next_x = y
+                break
+    return [next_x, next_y]
 
 
 def move_left_up(x, y, state):
@@ -303,6 +328,6 @@ Initial_Board = [
 
 print(get_queens("w", Initial_Board))
 
-print(move_right_up(4, 8, Initial_Board))
+print(move_right_down(5, 0 , Initial_Board))
 
 
