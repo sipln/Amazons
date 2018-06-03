@@ -153,7 +153,48 @@ def move_left_up(x, y, state):
 
 
 def move_left_down(x, y, state):
-    pass
+    next_x = x
+    next_y = y
+
+    if x == 9 or y == 0:
+        None
+    else:
+        found = False
+        temp_x = x
+        temp_y = y
+        smaller = min(9 - x, y)
+
+        if smaller == (9 - x):
+            for i in range(x + 1, x + 1 + smaller, 1):
+                if state[i][temp_y - 1] != '.':
+                    try:
+                        next_x = random.randint(x + 1, i - 1)
+                    except ValueError:
+                        next_x = x
+                    next_y = y - abs(x - next_x)
+                    found = True
+                    break
+                temp_y -= 1
+        else:
+            for i in range(smaller - 1, -1, -1):
+                if state[temp_x + 1][i] != '.':
+                    try:
+                        next_y = random.randint(i + 1, smaller - 1)
+                    except ValueError:
+                        next_y = smaller
+                    next_x = x + abs(y - next_y)
+                    found = True
+                    break
+                temp_x += 1
+
+        if found is False:
+            if smaller == (9 - x):
+                next_x = random.randint(x + 1, 9)
+                next_y = y - abs(x - next_x)
+            else:
+                next_y = random.randint(0, smaller - 1)
+                next_x = x + abs(y - next_y)
+    return [next_x, next_y]
 
 
 def move_right_up(x, y, state):
@@ -179,6 +220,6 @@ Initial_Board = [
 
 print(get_queens("w", Initial_Board))
 
-print(move_left_up(3, 1, Initial_Board))
+print(move_left_down(3, 4, Initial_Board))
 
 
