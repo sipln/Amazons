@@ -157,7 +157,7 @@ def move_left_down(x, y, state):
 
 
 def move_right_up(x, y, state):
-   pass
+    pass
 
 
 def move_right_down(x, y, state):
