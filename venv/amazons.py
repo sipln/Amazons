@@ -61,15 +61,17 @@ class Player:
             move_check_list.append(move_check)
 
         pick_queen = None
-        next_move  = []
+        next_move = []
+        index = 0
         for queen in my_queens:
-            queen_moves = move_check_list[my_queens.index(queen)]
+            queen_moves = move_check_list[index]
             if queen_moves != [[queen[0], queen[1]]*8 ]:
                 pick_queen = queen
                 for move in queen_moves:
                     if move != [queen[0], queen[1]]:
                         next_move = move
                         break
+            index += 1
 
         arrows = []
         arrow_state = copy.deepcopy(copy_state)
