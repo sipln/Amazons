@@ -69,7 +69,7 @@ class Player:
                 for move in queen_moves:
                     if move != [queen[0], queen[1]]:
                         next_move = move
-                        break;
+                        break
 
         arrows = []
         arrow_state = copy.deepcopy(copy_state)
@@ -83,7 +83,7 @@ class Player:
             for arrow in arrows:
                 if arrow != [next_move[0], next_move[1]]:
                     throw_arrow = arrow
-
+                    break
 
         result = [
             pick_queen,
