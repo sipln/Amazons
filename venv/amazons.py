@@ -280,8 +280,8 @@ def move_right_down(x, y, state):
                 temp_x -= 1
 
         if found is False:
-            if smaller == x:
-                next_x = random.randint(0, smaller - 1)
+            if smaller == (9 - x):
+                next_x = random.randint(x + 1, 9)
                 next_y = y + abs(x - next_x)
             else:
                 next_y = random.randint(y + 1, 9)
