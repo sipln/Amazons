@@ -57,13 +57,18 @@ def move_left(x, y, state):
     if y == 0:
         None
     else:
+        found = False
         for i in range(y - 1, -1, -1):
             if state[x][i] != '.':
                 try:
                     next_y = random.randint(i + 1, y - 1)
                 except ValueError:
                     next_y = y
+                found = True
                 break
+
+        if found is False:
+            next_y = random.randint(0, y - 1)
     return [next_x, next_y]
 
 
@@ -74,13 +79,18 @@ def move_up(x, y, state):
     if x == 0:
         None
     else:
+        found = False
         for i in range(x - 1, -1, -1):
             if state[i][y] != '.':
                 try:
                     next_x = random.randint(i + 1, x - 1)
                 except ValueError:
                     next_x = x
+                found = True
                 break
+
+        if found is False:
+            next_x = random.randint(0, x - 1)
     return [next_x, next_y]
 
 
@@ -90,13 +100,18 @@ def move_right(x, y, state):
     if y == 9:
         None
     else:
+        found = False
         for i in range(y + 1, 10, 1):
             if state[x][i] != '.':
                 try:
                     next_y = random.randint(y + 1, i - 1)
                 except ValueError:
                     next_y = y
+                found = True
                 break
+
+        if found is False:
+            next_y = random.randint(y + 1, 9)
     return [next_x, next_y]
 
 
@@ -106,13 +121,18 @@ def move_down(x, y, state):
     if x == 9:
         None
     else:
+        found = False
         for i in range(x + 1, 10, 1):
             if state[x][i] != '.':
                 try:
                     next_x = random.randint(x + 1, i - 1)
                 except ValueError:
                     next_x = y
+                found = True
                 break
+
+        if found is False:
+            next_x = random.randint(x + 1, 9)
     return [next_x, next_y]
 
 
